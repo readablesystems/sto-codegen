@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<ts-split-definition>
+    <record name="sample_index_value">
+        <split name="value_part_1">
+            <field type="int" width="32" name="value_1"/>
+            <field type="int" width="32" name="value_2"/>
+            <field type="int" width="32" name="value_3"/>
+        </split>
+        <split name="value_part_2">
+            <field type="int" width="32" name="value_4"/>
+        </split>
+    </record>
+</ts-split-definition>
