@@ -14,19 +14,24 @@ def is_positive_integer(s):
         return False
 
 
-def type_to_ctype(typename, width):
+def type_to_ctype(typename, width, extent):
     if typename == 'int' or typename == 'uint':
         if width in ['8', '16', '32', '64']:
             return typename + width
     elif typename == 'vchar':
         if is_positive_integer(width):
+            return 'var_string<{}>'.format(int(width))
+    elif typename == 'fchar':
+        if is_positive_integer(width):
             return 'fix_string<{}>'.format(int(width))
+    elif typename == 'fchar-arr':
+        if is_positive_integer(width) and extent != '':
+            return 'std::array<fix_string<{}>, {}>'.format(int(width), extent)
     elif typename == 'cpplistu64':
         return 'std::list<uint64>'
-    else:
-        raise TSGenSyntaxError(
-            'invalid typename width combination: {}, {}'.format(typename,
-                                                                width))
+
+    raise TSGenSyntaxError(
+        'invalid typename width combination: {}, {}'.format(typename, width))
 
 
 def check_tag(node, expected_name):
@@ -87,13 +92,14 @@ def process_record(record):
         for field in split:
             field_name = field.attrib['name']
             field_type = field.attrib['type']
-            field_width = field.attrib['width']
+            field_width = field.attrib.get('width', '0')
+            field_extent = field.attrib.get('extent', '')
             if field_name in all_fields:
                 raise TSGenSyntaxError(
                     'duplicate field name: {}'.format(field_name))
             all_fields.add(field_name)
             split_fields.append(
-                (fidx, type_to_ctype(field_type, field_width), field_name))
+                (fidx, type_to_ctype(field_type, field_width, field_extent), field_name))
             fidx += 1
         fields_by_splits.append(split_fields)
 
