@@ -21,6 +21,8 @@ def type_to_ctype(typename, width):
     elif typename == 'vchar':
         if is_positive_integer(width):
             return 'fix_string<{}>'.format(int(width))
+    elif typename == 'cpplistu64':
+        return 'std::list<uint64>'
     else:
         raise TSGenSyntaxError(
             'invalid typename width combination: {}, {}'.format(typename,
@@ -99,7 +101,7 @@ def process_record(record):
 
     record_splitparams_template = """
 template <>
-struct bench::SplitParams<{0}> {{
+struct SplitParams<{0}> {{
   using split_type_list = std::tuple<{1}>;
   using layout_type = typename SplitMvObjectBuilder<split_type_list>::type;
   static constexpr size_t num_splits = std::tuple_size<split_type_list>::value;
@@ -132,6 +134,7 @@ struct bench::SplitParams<{0}> {{
 
     split_builders = []
     split_mergers = []
+    level1_line_sep = '\n' + ' ' * 2
     lambda_line_sep = '\n' + ' ' * 6
     map_line_sep = '\n' + ' ' * 4
 
@@ -162,6 +165,130 @@ struct bench::SplitParams<{0}> {{
                                              ','.join(split_builders),
                                              ','.join(split_mergers),
                                              map_body_lines))
+
+    record_accessor_template = """
+template <typename A>
+class RecordAccessor<A, {vt}> {{
+ public:
+  {fieldaccessors}
+
+  void copy_into({vt}* dst) const {{
+    return impl().copy_into_impl(dst);
+  }}
+
+ private:
+  const A& impl() const {{
+    return *static_cast<const A*>(this);
+  }}
+}};
+
+template <>
+class UniRecordAccessor<{vt} : public RecordAccessor<UniRecordAccessor<{vt}>, {vt}> {{
+ public:
+  UniRecordAccessor(const {vt}* const vptr) : vptr_(vptr) {{}}
+
+ private:
+  {unifieldimpls}
+
+  {unicopyimpl}
+
+  const {vt}* vptr_;
+  friend RecordAccessor<UniRecordAccessor<{vt}>, {vt}>;
+}};
+
+template <>
+class SplitRecordAccessor<{vt}> : public RecordAccessor<SplitRecordAccessor<{vt}>, {vt}> {{
+ public:
+   static constexpr size_t num_splits = SplitParams<{vt}>::num_splits;
+
+   SplitRecordAccessor(const std::array<void*, num_splits>& vptrs)
+     : {splitctorbody} {{}}
+
+ private:
+  {splitfieldimpls}
+
+  {splitcopyimpl}
+
+  {splitvptrs}
+
+  friend RecordAccessor<SplitRecordAccessor<{vt}>, {vt}>;
+}};
+"""
+
+    field_accessor_template = """
+  const {fieldtype}& {fieldname}() const {{
+    return impl().{fieldname}_impl();
+  }}
+"""
+
+    uni_field_impl_template = """
+  const {fieldtype}& {fieldname}_impl() const {{
+    return vptr_->{fieldname};
+  }}
+"""
+
+    split_field_impl_template = """
+  const {fieldtype}& {fieldname}_impl() const {{
+    return vptr_{splitno}_->{fieldname};
+  }}
+"""
+
+    copy_impl_template = """
+  void copy_into_impl({vt}* dst) const {{
+    {copyimpllines}
+  }}
+"""
+    uni_copy_lines_template = """
+    if (vptr_) {{
+      {copyfields}
+    }}"""
+
+    split_copy_group_template = """
+    if (vptr_{splitno}_) {{
+      {copyfields}
+    }}
+"""
+    uni_copy_line_template = """dst->{fieldname} = vptr_->{fieldname};"""
+    split_copy_line_template = """dst->{fieldname} = vptr_{splitno}_->{fieldname};"""
+
+    split_copy_impl_template = """
+"""
+
+    split_ctor_line_template = """vptr_{splitno}_(reinterpret_cast<{splitname}*>(vptrs[{splitno}]))"""
+    split_vptr_template = """const {splitname}* vptr_{splitno}_;"""
+
+    field_accessors = []
+    uni_field_impls = []
+    split_field_impls = []
+    split_ctor_lines = []
+    split_vptrs = []
+    uni_copy_lines = []
+    split_copy_lines_by_group = []
+    for sidx, fields in enumerate(fields_by_splits):
+        split_copy_line_group = []
+        split_ctor_lines.append(split_ctor_line_template.format(splitno=sidx, splitname=split_names[sidx]))
+        split_vptrs.append(split_vptr_template.format(splitno=sidx, splitname=split_names[sidx]))
+        for field in fields:
+            field_accessors.append(field_accessor_template.format(fieldtype=field[1], fieldname=field[2]))
+            uni_field_impls.append(uni_field_impl_template.format(fieldtype=field[1], fieldname=field[2]))
+            split_field_impls.append(split_field_impl_template.format(fieldtype=field[1], fieldname=field[2], splitno=sidx))
+
+            uni_copy_lines.append(uni_copy_line_template.format(fieldname=field[2]))
+            split_copy_line_group.append(split_copy_line_template.format(fieldname=field[2], splitno=sidx))
+        split_copy_lines_by_group.append(split_copy_group_template.format(splitno=sidx, copyfields=lambda_line_sep.join(split_copy_line_group)))
+
+    field_accessors_code = level1_line_sep.join(field_accessors)
+    uni_field_impl_code = level1_line_sep.join(uni_field_impls)
+    split_field_impl_code = level1_line_sep.join(split_field_impls)
+    split_ctor_code = ', '.join(split_ctor_lines)
+    uni_copy_impl_code = copy_impl_template.format(vt=record_name, copyimpllines=uni_copy_lines_template.format(copyfields=lambda_line_sep.join(uni_copy_lines)))
+    split_copy_impl_code = copy_impl_template.format(vt=record_name, copyimpllines=map_line_sep.join(split_copy_lines_by_group))
+    split_vptrs_code = level1_line_sep.join(split_vptrs)
+
+    record_accessor_code = record_accessor_template.format(vt=record_name, fieldaccessors=field_accessors_code, unifieldimpls=uni_field_impl_code,
+                                                           unicopyimpl=uni_copy_impl_code, splitctorbody=split_ctor_code, splitfieldimpls=split_field_impl_code,
+                                                           splitcopyimpl=split_copy_impl_code, splitvptrs=split_vptrs_code)
+    print(record_accessor_code)
 
 
 if __name__ == '__main__':
