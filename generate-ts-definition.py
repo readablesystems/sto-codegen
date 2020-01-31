@@ -1,5 +1,6 @@
 #!/usr/env/bin python3
 
+import sys
 from xml.etree.ElementTree import parse
 
 
@@ -43,8 +44,10 @@ def check_tag(node, expected_name):
 
 def process_tree(all_definitions):
     check_tag(all_definitions, 'ts-split-definition')
+    print('namespace bench {\n')
     for record in all_definitions:
         process_record(record)
+    print('} // namespace bench')
 
 
 def generate_map_body(start_index_list):
@@ -69,7 +72,6 @@ def generate_map_body(start_index_list):
             line += ' return {si};'.format(si=i)
         output_lines.append(line)
     return output_lines
-
 
 def process_record(record):
     check_tag(record, 'record')
@@ -298,6 +300,8 @@ class SplitRecordAccessor<{vt}> : public RecordAccessor<SplitRecordAccessor<{vt}
 
 
 if __name__ == '__main__':
-    tree = parse('split-ts-definition.xml')
+    if len(sys.argv) != 2:
+        assert False, 'Wrong number of arguments'
+    tree = parse(sys.argv[1])
     root = tree.getroot()
     process_tree(root)
