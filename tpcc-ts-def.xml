@@ -6,9 +6,9 @@
             <field type="vchar" width="20" name="w_street_1"/>
             <field type="vchar" width="20" name="w_street_2"/>
             <field type="vchar" width="20" name="w_city"/>
-            <field type="vchar" width="2" name="w_state"/>
-            <field type="vchar" width="9" name="w_zip"/>
-            <field type="int" width="32" name="w_tax"/>
+            <field type="fchar" width="2" name="w_state"/>
+            <field type="fchar" width="9" name="w_zip"/>
+            <field type="int" width="64" name="w_tax"/>
         </split>
         <split name="warehouse_value_frequpd">
             <field type="uint" width="64" name="w_ytd"/>
@@ -21,8 +21,8 @@
             <field type="vchar" width="20" name="d_street_1"/>
             <field type="vchar" width="20" name="d_street_2"/>
             <field type="vchar" width="20" name="d_city"/>
-            <field type="vchar" width="2" name="d_state"/>
-            <field type="vchar" width="9" name="d_zip"/>
+            <field type="fchar" width="2" name="d_state"/>
+            <field type="fchar" width="9" name="d_zip"/>
             <field type="int" width="64" name="d_tax"/>
         </split>
         <split name="district_value_frequpd">
