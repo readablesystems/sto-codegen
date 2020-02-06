@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <ts-split-definition>
-    <record name="warehouse_value">
-        <split name="warehouse_value_infreq">
+    <record name="tpcc::warehouse_value">
+        <split name="tpcc::warehouse_value_infreq">
             <field type="vchar" width="10" name="w_name"/>
             <field type="vchar" width="20" name="w_street_1"/>
             <field type="vchar" width="20" name="w_street_2"/>
@@ -10,13 +10,13 @@
             <field type="fchar" width="9" name="w_zip"/>
             <field type="int" width="64" name="w_tax"/>
         </split>
-        <split name="warehouse_value_frequpd">
+        <split name="tpcc::warehouse_value_frequpd">
             <field type="uint" width="64" name="w_ytd"/>
         </split>
     </record>
 
-    <record name="district_value">
-        <split name="district_value_infreq">
+    <record name="tpcc::district_value">
+        <split name="tpcc::district_value_infreq">
             <field type="vchar" width="10" name="d_name"/>
             <field type="vchar" width="20" name="d_street_1"/>
             <field type="vchar" width="20" name="d_street_2"/>
@@ -25,13 +25,13 @@
             <field type="fchar" width="9" name="d_zip"/>
             <field type="int" width="64" name="d_tax"/>
         </split>
-        <split name="district_value_frequpd">
+        <split name="tpcc::district_value_frequpd">
             <field type="int" width="64" name="d_ytd"/>
         </split>
     </record>
 
-    <record name="customer_value">
-        <split name="customer_value_infreq">
+    <record name="tpcc::customer_value">
+        <split name="tpcc::customer_value_infreq">
             <field type="vchar" width="16" name="c_first"/>
             <field type="fchar" width="2" name="c_middle"/>
             <field type="vchar" width="16" name="c_last"/>
@@ -46,7 +46,7 @@
             <field type="int" width="64" name="c_credit_lim"/>
             <field type="int" width="64" name="c_discount"/>
         </split>
-        <split name="customer_value_frequpd">
+        <split name="tpcc::customer_value_frequpd">
             <field type="int" width="64" name="c_balance"/>
             <field type="int" width="64" name="c_ytd_payment"/>
             <field type="uint" width="16" name="c_payment_cnt"/>
@@ -55,8 +55,8 @@
         </split>
     </record>
 
-    <record name="history_value">
-        <split name="history_value">
+    <record name="tpcc::history_value">
+        <split name="tpcc::history_value">
             <field type="uint" width="64" name="h_c_id"/>
             <field type="uint" width="64" name="h_c_d_id"/>
             <field type="uint" width="64" name="h_c_w_id"/>
@@ -68,33 +68,33 @@
         </split>
     </record>
 
-    <record name="order_value">
-        <split name="order_value_infreq">
+    <record name="tpcc::order_value">
+        <split name="tpcc::order_value_infreq">
             <field type="uint" width="64" name="o_c_id"/>
             <field type="uint" width="32" name="o_entry_d"/>
             <field type="uint" width="32" name="o_ol_cnt"/>
             <field type="uint" width="32" name="o_all_local"/>
         </split>
-        <split name="order_value_frequpd">
+        <split name="tpcc::order_value_frequpd">
             <field type="uint" width="64" name="o_carrier_id"/>
         </split>
     </record>
 
-    <record name="orderline_value">
-        <split name="orderline_value_infreq">
+    <record name="tpcc::orderline_value">
+        <split name="tpcc::orderline_value_infreq">
             <field type="uint" width="64" name="ol_i_id"/>
             <field type="uint" width="64" name="ol_supply_w_id"/>
             <field type="uint" width="32" name="ol_quantity"/>
             <field type="int" width="32" name="ol_amount"/>
             <field type="fchar" width="24" name="ol_dist_info"/>
         </split>
-        <split name="orderline_value_frequpd">
+        <split name="tpcc::orderline_value_frequpd">
             <field type="uint" width="32" name="ol_delivery_d"/>
         </split>
     </record>
 
-    <record name="item_value">
-        <split name="item_value">
+    <record name="tpcc::item_value">
+        <split name="tpcc::item_value">
             <field type="uint" width="64" name="i_im_id"/>
             <field type="uint" width="32" name="i_price"/>
             <field type="vchar" width="24" name="i_name"/>
@@ -102,12 +102,12 @@
         </split>
     </record>
 
-    <record name="stock_value">
-        <split name="stock_value_infreq">
+    <record name="tpcc::stock_value">
+        <split name="tpcc::stock_value_infreq">
             <field type="fchar-arr" width="24" extent="NUM_DISTRICTS_PER_WAREHOUSE" name="s_dists"/>
             <field type="vchar" width="50" name="s_data"/>
         </split>
-        <split name="stock_value_frequpd">
+        <split name="tpcc::stock_value_frequpd">
             <field type="int" width="32" name="s_quantity"/>
             <field type="uint" width="32" name="s_ytd"/>
             <field type="uint" width="32" name="s_order_cnt"/>
@@ -115,8 +115,8 @@
         </split>
     </record>
 
-    <record name="customer_idx_value">
-        <split name="customer_idx_value">
+    <record name="tpcc::customer_idx_value">
+        <split name="tpcc::customer_idx_value">
             <field type="cpplistu64" name="c_ids"/>
         </split>
     </record>
