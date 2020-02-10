@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<ts-split-definition>
+    <record name="rubis::item_row">
+        <split name="rubis::item_row_infreq">
+            <field type="vchar" width="100" name="name"/>
+            <field type="vchar" width="255" name="description"/>
+            <field type="uint" width="32" name="initial_price"/>
+            <field type="uint" width="32" name="reserve_price"/>
+            <field type="uint" width="32" name="buy_now"/>
+            <field type="uint" width="32" name="start_date"/>
+            <field type="uint" width="64" name="seller"/>
+            <field type="uint" width="64" name="category"/>
+        </split>
+        <split name="rubis::item_row_frequpd">
+            <field type="uint" width="32" name="quantity"/>
+            <field type="uint" width="32" name="nb_of_bids"/>
+            <field type="uint" width="32" name="max_bid"/>
+            <field type="uint" width="32" name="end_date"/>
+        </split>
+    </record>
+
+    <record name="rubis::bid_row">
+        <split name="rubis::bid_row">
+            <field type="uint" width="32" name="quantity"/>
+            <field type="uint" width="32" name="bid"/>
+            <field type="uint" width="32" name="max_bid"/>
+            <field type="uint" width="32" name="date"/>
+        </split>
+    </record>
+
+    <record name="rubis::buynow_row">
+        <split name="rubis::buynow_row">
+            <field type="uint" width="32" name="quantity"/>
+            <field type="uint" width="32" name="date"/>
+        </split>
+    </record>
+</ts-split-definition>

@@ -1,0 +1,171 @@
+<?xml version="1.0"?>
+<ts-split-definition>
+    <record name="wikipedia::ipblocks_row">
+        <split name="wikipedia::ipblocks_row">
+            <field type="vchar" width="255" name="ipb_address"/>
+            <field type="int" width="32" name="ipb_user"/>
+            <field type="int" width="32" name="ipb_by"/>
+            <field type="vchar" width="255" name="ipb_by_text"/>
+            <field type="vchar" width="255" name="ipb_reason"/>
+            <field type="vchar" width="14" name="ipb_timestamp"/>
+            <field type="int" width="32" name="ipb_auto"/>
+            <field type="int" width="32" name="ipb_anon_only"/>
+            <field type="int" width="32" name="ipb_create_account"/>
+            <field type="int" width="32" name="ipb_enable_autoblock"/>
+            <field type="vchar" width="14" name="ipb_expiry"/>
+            <field type="vchar" width="8" name="ipb_range_start"/>
+            <field type="vchar" width="8" name="ipb_range_end"/>
+            <field type="int" width="32" name="ipb_deleted"/>
+            <field type="int" width="32" name="ipb_block_email"/>
+            <field type="int" width="32" name="ipb_allow_usertalk"/>
+        </split>
+    </record>
+
+    <record name="wikipedia::logging_row">
+        <split name="wikipedia::logging_row">
+            <field type="vchar" width="32" name="log_type"/>
+            <field type="vchar" width="32" name="log_action"/>
+            <field type="vchar" width="14" name="log_timestamp"/>
+            <field type="int" width="32" name="log_user"/>
+            <field type="int" width="32" name="log_namespace"/>
+            <field type="vchar" width="255" name="log_title"/>
+            <field type="vchar" width="255" name="log_comment"/>
+            <field type="vchar" width="255" name="log_params"/>
+            <field type="int" width="32" name="log_deleted"/>
+            <field type="vchar" width="255" name="log_user_text"/>
+            <field type="int" width="32" name="log_page"/>
+        </split>
+    </record>
+
+    <record name="wikipedia::page_row">
+        <split name="wikipedia::page_row_infreq">
+            <field type="int" width="32" name="page_namespace"/>
+            <field type="vchar" width="255" name="page_title"/>
+            <field type="vchar" width="255" name="page_restrictions"/>
+            <field type="int" width="64" name="page_counter"/>
+            <field type="float" name="page_random"/>
+        </split>
+        <split name="wikipedia::page_row_frequpd">
+            <field type="int" width="32" name="page_is_redirect"/>
+            <field type="int" width="32" name="page_is_new"/>
+            <field type="vchar" width="14" name="page_touched"/>
+            <field type="int" width="32" name="page_latest"/>
+            <field type="int" width="32" name="page_len"/>
+        </split>
+    </record>
+
+    <record name="wikipedia::page_idx_row">
+        <split name="wikipedia::page_idx_row">
+            <field type="int" width="32" name="page_id"/>
+        </split>
+    </record>
+    
+    <record name="wikipedia::page_restrictions_row">
+        <split name="wikipedia::page_restrictions_row">
+            <field type="int" width="32" name="pr_page"/>
+            <field type="vchar" width="60" name="pr_type"/>
+            <field type="vchar" width="60" name="pr_level"/>
+            <field type="int" width="32" name="pr_cascade"/>
+            <field type="int" width="32" name="pr_user"/>
+            <field type="vchar" width="14" name="pr_expiry"/>
+        </split>
+    </record>
+    
+    <record name="wikipedia::page_restrictions_idx_row">
+        <split name="wikipedia::page_restrictions_idx_row">
+            <field type="int" width="32" name="pr_id"/>
+        </split>
+    </record>
+
+    <record name="wikipedia::recentchanges_row">
+        <split name="wikipedia::recentchanges_row">
+            <field type="vchar" width="14" name="rc_timestamp"/>
+            <field type="vchar" width="14" name="rc_cur_time"/>
+            <field type="int" width="32" name="rc_user"/>
+            <field type="vchar" width="255" name="rc_user_text"/>
+            <field type="int" width="32" name="rc_namespace"/>
+            <field type="vchar" width="255" name="rc_title"/>
+            <field type="vchar" width="255" name="rc_comment"/>
+            <field type="int" width="32" name="rc_minor"/>
+            <field type="int" width="32" name="rc_bot"/>
+            <field type="int" width="32" name="rc_new"/>
+            <field type="int" width="32" name="rc_cur_id"/>
+            <field type="int" width="32" name="rc_this_oldid"/>
+            <field type="int" width="32" name="rc_last_oldid"/>
+            <field type="int" width="32" name="rc_type"/>
+            <field type="int" width="32" name="rc_moved_to_ns"/>
+            <field type="vchar" width="255" name="rc_moved_to_title"/>
+            <field type="int" width="32" name="rc_patrolled"/>
+            <field type="vchar" width="40" name="rc_ip"/>
+            <field type="int" width="32" name="rc_old_len"/>
+            <field type="int" width="32" name="rc_new_len"/>
+            <field type="int" width="32" name="rc_deleted"/>
+            <field type="int" width="32" name="rc_logid"/>
+            <field type="vchar" width="255" name="rc_log_type"/>
+            <field type="vchar" width="255" name="rc_log_action"/>
+            <field type="vchar" width="255" name="rc_params"/>
+        </split>
+    </record>
+
+    <record name="wikipedia::revision_row">
+        <split name="wikipedia::revision_row">
+            <field type="int" width="32" name="rev_page"/>
+            <field type="int" width="32" name="rev_text_id"/>
+            <field type="vchar" width="1024" name="rev_comment"/>
+            <field type="int" width="32" name="rev_user"/>
+            <field type="vchar" width="255" name="rev_user_text"/>
+            <field type="vchar" width="14" name="rev_timestamp"/>
+            <field type="int" width="32" name="rev_minor_edit"/>
+            <field type="int" width="32" name="rev_deleted"/>
+            <field type="int" width="32" name="rev_len"/>
+            <field type="int" width="32" name="rev_parent_id"/>
+        </split>
+    </record>
+
+    <record name="wikipedia::text_row">
+        <split name="wikipedia::text_row">
+            <field type="charptr" name="old_text"/>
+            <field type="vchar" width="30" name="old_flags"/>
+            <field type="int" width="32" name="old_page"/>
+        </split>
+    </record>
+
+    <record name="wikipedia::useracct_row">
+        <split name="wikipedia::useracct_row_infreq">
+            <field type="vchar" width="255" name="user_name"/>
+            <field type="vchar" width="255" name="user_real_name"/>
+            <field type="vchar" width="32" name="user_password"/>
+            <field type="vchar" width="32" name="user_newpassword"/>
+            <field type="vchar" width="14" name="user_newpass_time"/>
+            <field type="vchar" width="40" name="user_email"/>
+            <field type="vchar" width="255" name="user_options"/>
+            <field type="vchar" width="32" name="user_token"/>
+            <field type="vchar" width="32" name="user_email_authenticated"/>
+            <field type="vchar" width="32" name="user_email_token"/>
+            <field type="vchar" width="14" name="user_email_token_expires"/>
+            <field type="vchar" width="14" name="user_registration"/>
+        </split>
+        <split name="wikipedia::useracct_row_frequpd">
+            <field type="vchar" width="14" name="user_touched"/>
+            <field type="int" width="32" name="user_editcount"/>
+        </split>
+    </record>
+
+    <record name="wikipedia::useracct_idx_row">
+        <split name="wikipedia::useracct_idx_row">
+            <field type="int" width="32" name="user_id"/>
+        </split>
+    </record>
+
+    <record name="wikipedia::user_groups_row">
+        <split name="wikipedia::user_groups_row">
+            <field type="vchar" width="16" name="ug_group"/>
+        </split>
+    </record>
+
+    <record name="wikipedia::watchlist_row">
+        <split name="wikipedia::watchlist_row">
+            <field type="vchar" width="14" name="wl_notificationtimestamp"/>
+        </split>
+    </record>
+</ts-split-definition>
