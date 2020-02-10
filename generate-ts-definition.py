@@ -19,6 +19,10 @@ def type_to_ctype(typename, width, extent):
     if typename == 'int' or typename == 'uint':
         if width in ['8', '16', '32', '64']:
             return typename + width + '_t'
+    elif typename == 'float':
+        return typename
+    elif typename == 'charptr':
+        return 'char*'
     elif typename == 'vchar':
         if is_positive_integer(width):
             return 'var_string<{}>'.format(int(width))
@@ -26,8 +30,8 @@ def type_to_ctype(typename, width, extent):
         if is_positive_integer(width):
             return 'fix_string<{}>'.format(int(width))
     elif typename == 'fchar-arr':
-        if is_positive_integer(width) and extent != '':
-            return 'std::array<fix_string<{}>, {}>'.format(int(width), extent)
+        if width != '' and extent != '':
+            return 'std::array<fix_string<{}>, {}>'.format(width, extent)
     elif typename == 'cpplistu64':
         return 'std::list<uint64_t>'
 

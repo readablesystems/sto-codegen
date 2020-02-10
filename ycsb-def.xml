@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<ts-split-definition>
+    <record name="ycsb::ycsb_value">
+        <split name="ycsb::ycsb_value">
+            <field type="fchar-arr" width="COL_WIDTH" extent="HALF_NUM_COLUMNS" name="odd_columns"/>
+            <field type="fchar-arr" width="COL_WIDTH" extent="HALF_NUM_COLUMNS" name="even_columns"/>
+        </split>
+    </record>
+</ts-split-definition>
